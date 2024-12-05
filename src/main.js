@@ -3,29 +3,41 @@ let leftBank = ['Волк', 'Коза', 'Капуста'];
 let rightBank = [];
 let currentBank = 'left'; // Текущий берег (left или right)
 let moves = []; // Для хранения истории перемещений
+let moveCount = 0;
 const buttonContainer = document.querySelector('.buttons-container');
-const leftBankDiv = document.getElementById('left-bank-buttons'); // Контейнер для кнопок левого берега
-const rightBankDiv = document.getElementById('right-bank-buttons');
+const leftBankButtons = document.getElementById('left-bank-buttons');
+const rightBankButtons = document.getElementById('right-bank-buttons');
+const counter = document.querySelector('.count');
+const leftBankTitle = document.getElementById('left-bank');
+const rightBankTitle = document.getElementById('right-bank');
+markBank(currentBank)
 
 function renderButtons() {
-  leftBankDiv.innerHTML = ''; // Очищаем контейнер левого берега
-  rightBankDiv.innerHTML = ''; // Очищаем контейнер правого берега
+  leftBankButtons.innerHTML = ''; // Очищаем контейнер левого берега
+  rightBankButtons.innerHTML = ''; // Очищаем контейнер правого берега
 
   // Сначала рендерим кнопки на левом берегу
-  leftBank.forEach(entity => {
+  leftBank.forEach((entity) => {
     const button = document.createElement('button');
     button.textContent = entity;
     button.onclick = () => move(entity);
-    leftBankDiv.appendChild(button); // Добавляем кнопку в контейнер левого берега
+    leftBankButtons.appendChild(button);
   });
 
   // Затем рендерим кнопки на правом берегу
-  rightBank.forEach(entity => {
+  rightBank.forEach((entity) => {
     const button = document.createElement('button');
     button.textContent = entity;
     button.onclick = () => move(entity);
-    rightBankDiv.appendChild(button); // Добавляем кнопку в контейнер правого берега
+    rightBankButtons.appendChild(button);
   });
+}
+
+function markBank (currentBank) {
+  leftBankTitle.classList.remove('active');
+  rightBankTitle.classList.remove('active');
+  currentBank === 'left' ? leftBankTitle.classList.add('active') : rightBankTitle.classList.add('active')
+
 }
 
 // Функция для отображения состояния
@@ -35,29 +47,30 @@ function displayState() {
   console.log(`Текущий берег: ${currentBank}`);
   console.log('История перемещений:', moves.join(' -> '));
   renderButtons();
+  counter.textContent = moveCount;
+
 }
 
 // Функция для перемещения сущности
-
 function move(entity) {
   if (currentBank === 'left') {
     if (leftBank.includes(entity)) {
-      leftBank = leftBank.filter(e => e !== entity);
+      leftBank = leftBank.filter((e) => e !== entity);
       rightBank.push(entity);
       moves.push(`Крестьянин перевез ${entity} from ${currentBank}`);
     }
   } else {
     if (rightBank.includes(entity)) {
-      rightBank = rightBank.filter(e => e !== entity);
+      rightBank = rightBank.filter((e) => e !== entity);
       leftBank.push(entity);
       moves.push(`Крестьянин перевез ${entity} from ${currentBank}`);
     }
   }
   currentBank = currentBank === 'left' ? 'right' : 'left'; // Меняем берег
-
+  counter.textContent = moveCount++;
+  markBank(currentBank)
   displayState(); // Обновляем состояние
 }
-
 
 // Функция для проверки безопасности состояния
 function isSafe() {
@@ -80,7 +93,5 @@ function isSafe() {
   return true;
 }
 
-
 // Запускаем решение загадки
 displayState();
-

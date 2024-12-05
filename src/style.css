@@ -63,7 +63,14 @@ button:focus-visible {
   /* display: flex; */
 
   max-width: 1280px;
-  margin: 0 auto;
+}
+
+.main {
+  width: 980px;
+  margin: 60px;
+  /* display: flex;
+  justify-content: center;
+  gap: 100px; */
 }
 
 .output {
@@ -72,5 +79,7 @@ button:focus-visible {
 }
 
 .active {
-  background-color: lightcoral;
+  background-color: rgb(197, 255, 159);
 }
+
+

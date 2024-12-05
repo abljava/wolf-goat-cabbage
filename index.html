@@ -9,15 +9,17 @@
   </head>
   <body>
     <div class="page">
-      <div class="buttons-container">
-        На левом берегу:
-        <div id="left-bank-buttons" class="button"></div>
-      </div>
-
-      <div class="buttons-container">
-        На правом берегу:
-        <div id="right-bank-buttons" class="button"></div>
-      </div>
+      <section class="main">
+        <div>
+          <p id="left-bank">Левый берег:</p>
+          <div id="left-bank-buttons" class="button"></div>
+        </div>
+        <div>
+          <p id="right-bank">Правый берег:</p>
+          <div id="right-bank-buttons" class="button"></div>
+        </div>
+        <p class="counter">Количество ходов: <span class="count"></span></p>
+      </section>
     </div>
 
     <script type="module" src="/src/main.js"></script>
