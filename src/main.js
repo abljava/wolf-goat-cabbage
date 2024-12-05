@@ -2,7 +2,7 @@
 let leftBank = ['Волк', 'Коза', 'Капуста'];
 let rightBank = [];
 let currentBank = 'left'; // Текущий берег (left или right)
-let moves = []; // Для хранения истории перемещений
+// let moves = []; // Для хранения истории перемещений
 let moveCount = 0;
 const buttonContainer = document.querySelector('.buttons-container');
 const leftBankButtons = document.getElementById('left-bank-buttons');
@@ -10,7 +10,7 @@ const rightBankButtons = document.getElementById('right-bank-buttons');
 const counter = document.querySelector('.count');
 const leftBankTitle = document.getElementById('left-bank');
 const rightBankTitle = document.getElementById('right-bank');
-markBank(currentBank)
+markBank(currentBank);
 
 function renderButtons() {
   leftBankButtons.innerHTML = ''; // Очищаем контейнер левого берега
@@ -33,22 +33,23 @@ function renderButtons() {
   });
 }
 
-function markBank (currentBank) {
+// Подсвечиваем текущий берег
+function markBank(currentBank) {
   leftBankTitle.classList.remove('active');
   rightBankTitle.classList.remove('active');
-  currentBank === 'left' ? leftBankTitle.classList.add('active') : rightBankTitle.classList.add('active')
-
+  currentBank === 'left'
+    ? leftBankTitle.classList.add('active')
+    : rightBankTitle.classList.add('active');
 }
 
 // Функция для отображения состояния
 function displayState() {
+  console.log(`Текущий берег: ${currentBank}`);
   console.log(`Левый берег: ${leftBank.join(', ')}`);
   console.log(`Правый берег: ${rightBank.join(', ')}`);
-  console.log(`Текущий берег: ${currentBank}`);
-  console.log('История перемещений:', moves.join(' -> '));
+  // console.log('История перемещений:', moves.join(' -> '));
   renderButtons();
   counter.textContent = moveCount;
-
 }
 
 // Функция для перемещения сущности
@@ -57,41 +58,73 @@ function move(entity) {
     if (leftBank.includes(entity)) {
       leftBank = leftBank.filter((e) => e !== entity);
       rightBank.push(entity);
-      moves.push(`Крестьянин перевез ${entity} from ${currentBank}`);
+      // moves.push(`Крестьянин перевез ${entity} from ${currentBank}`);
+      const message = isSafe();
+      if (message !== 'ok') {
+        showModal(isSafe());
+      }
     }
   } else {
     if (rightBank.includes(entity)) {
       rightBank = rightBank.filter((e) => e !== entity);
       leftBank.push(entity);
-      moves.push(`Крестьянин перевез ${entity} from ${currentBank}`);
+      // moves.push(`Крестьянин перевез ${entity} from ${currentBank}`);
     }
   }
   currentBank = currentBank === 'left' ? 'right' : 'left'; // Меняем берег
   counter.textContent = moveCount++;
-  markBank(currentBank)
-  displayState(); // Обновляем состояние
+  markBank(currentBank);
+  displayState();
 }
+
+// Сбрасываем состояние игры
+function resetGame() {
+  leftBank = ['Волк', 'Коза', 'Капуста'];
+  rightBank = [];
+  currentBank = 'left';
+  moves = [];
+  moveCount = 0;
+  displayState();
+}
+
+function showModal(message) {
+  const modal = document.getElementById('modal');
+  const modalMessage = document.getElementById('modal-message');
+  const closeButton = document.querySelector('.close-button');
+
+  modalMessage.textContent = message;
+  modal.style.display = 'block';
+
+  closeButton.onclick = function () {
+    modal.style.display = 'none';
+    // resetGame();
+  };
+
+  window.onclick = function (event) {
+    if (event.target === modal) {
+      modal.style.display = 'none';
+      // resetGame();
+    }
+  };
+}
+
 
 // Функция для проверки безопасности состояния
 function isSafe() {
   if (leftBank.includes('Коза') && leftBank.includes('Волк')) {
-    console.log('Волк съест козу');
-    return false; // Волк съест козу
+    return 'Волк съест козу 1';
   }
   if (leftBank.includes('Коза') && leftBank.includes('Капуста')) {
-    console.log('Коза съест капусту');
-    return false; // Коза съест капусту
+    return 'Коза съест капусту 1';
   }
   if (rightBank.includes('Коза') && rightBank.includes('Волк')) {
-    console.log('Волк съест козу');
-    return false; // Волк съест козу
+    return 'Волк съест козу 2';
   }
   if (rightBank.includes('Коза') && rightBank.includes('Капуста')) {
-    console.log('Коза съест капусту');
-    return false; // Коза съест капусту
+    return 'Коза съест капусту 2';
   }
-  return true;
+  return 'ok';
 }
 
-// Запускаем решение загадки
+// Запускаем
 displayState();
