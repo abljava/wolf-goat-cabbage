@@ -53,28 +53,32 @@ button {
 button:hover {
   background-color: #8acaff;
 }
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+
+button:disabled {
+  background-color: #ccc;
+  color: #666;
+  cursor: default;
+  opacity: 0.6;
+}
+button:disabled:hover {
+  background-color: #ccc;
+  color: #666;
 }
 
 li {
   list-style: none;
-
 }
 
 .page {
-  /* display: flex; */
-
   max-width: 1280px;
 }
 
 .main {
   width: 980px;
   margin: 60px;
-   display: flex;
+  display: flex;
   justify-content: center;
-  gap: 100px; 
+  gap: 100px;
 }
 
 .output {
@@ -91,26 +95,25 @@ li {
   justify-content: space-between;
 }
 
-
 .modal {
-  display: none; 
-  position: fixed; 
-  z-index: 1; 
+  display: none;
+  position: fixed;
+  z-index: 1;
   left: 0;
   top: 0;
-  width: 100%; 
-  height: 100%; 
-  overflow: auto; 
-  background-color: rgb(0,0,0); 
-  background-color: rgba(0,0,0,0.4); 
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
 .modal-content {
   background-color: #fefefe;
-  margin: 15% auto; 
+  margin: 15% auto;
   padding: 20px;
   border: 1px solid #888;
-  width: 80%; 
+  width: 80%;
 }
 
 .close-button {
@@ -128,45 +131,45 @@ li {
 }
 
 .container {
-    max-width: 400px;
-    margin: 50px auto;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    border-radius: 5px;
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
 }
 
 .form-group {
-    margin-bottom: 15px;
+  margin-bottom: 15px;
 }
 
 label {
-    display: block;
-    margin-bottom: 5px;
+  display: block;
+  margin-bottom: 5px;
 }
 
 input {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
 }
 
 button {
-    width: 100%;
-    padding: 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 button:hover {
-    background-color: #0056b3;
+  background-color: #0056b3;
 }
 
 #message {
-    margin-top: 15px;
-    padding: 10px;
-    border-radius: 4px;
+  margin-top: 15px;
+  padding: 10px;
+  border-radius: 4px;
 }

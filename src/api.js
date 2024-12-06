@@ -34,16 +34,3 @@ export function register(formData) {
       console.log(error);
     });
 }
-
-// Сохранение результата игры
-export function saveResult(data) {
-  return fetch(BASE_URL, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data),
-  })
-    .then((response) => response.json())
-    .then();
-}

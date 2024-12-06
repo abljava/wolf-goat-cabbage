@@ -34,13 +34,10 @@ function setResults() {
 // Регистрируем нового юзера
 form.addEventListener('submit', function (e) {
   e.preventDefault();
-  // const formData = {
-  //   username: input.value,
-  //   result: 0,
-  // };
-  // register(formData);
   currentUser.textContent = input.value;
   counter.textContent = 0;
+  console.log(currentUser.textContent);
+  renderButtons()
 });
 
 // Рендерим кнопки в текущем состоянии
@@ -53,6 +50,7 @@ function renderButtons() {
     const button = document.createElement('button');
     button.textContent = entity;
     button.onclick = () => move(entity);
+    button.disabled = currentUser.textContent === '';
     leftBankButtons.appendChild(button);
   });
 
@@ -61,6 +59,8 @@ function renderButtons() {
     const button = document.createElement('button');
     button.textContent = entity;
     button.onclick = () => move(entity);
+    button.disabled = currentUser.textContent === '';
+
     rightBankButtons.appendChild(button);
   });
 }
