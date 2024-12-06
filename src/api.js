@@ -1,31 +1,49 @@
+const BASE_URL = 'http://localhost:3000/';
+
 // Получение всех пользователей
 export function getUsers() {
-  return fetch('http://localhost:3000/')
-    .then((response) => response.json())
-    .then((data) => {
-      // console.log('Пользователи api:', data);
-      return data;
+  return fetch(BASE_URL)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Ошибка получения данных');
+      }
+      return response.json();
     })
     .catch((error) => {
       console.error('Ошибка при получении пользователей:', error);
+      throw error; // Пробрасываем ошибку дальше для обработки
     });
 }
 
 // Регистрация новго пользователя
 export function register(formData) {
-  return fetch('http://localhost:3000/', {
+  return fetch(BASE_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(formData),
   })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log('register: ', data);
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Ошибка получения данных');
+      }
+      return response.json();
     })
     .catch((error) => {
-      document.getElementById('message').textContent =
-        'Ошибка: ' + error.message;
+      console.log(error);
     });
+}
+
+// Сохранение результата игры
+export function saveResult(data) {
+  return fetch(BASE_URL, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  })
+    .then((response) => response.json())
+    .then();
 }

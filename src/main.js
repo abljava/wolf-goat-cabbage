@@ -3,33 +3,30 @@ import { getUsers, register } from './api';
 // Определяем начальное состояние
 let leftBank = ['Волк', 'Коза', 'Капуста'];
 let rightBank = [];
-let currentBank = 'left'; // Текущий берег (left или right)
-// let moves = []; // Для хранения истории перемещений
+let currentBank = 'left';
 let moveCount = 0;
 const leftBankButtons = document.getElementById('left-bank-buttons');
 const rightBankButtons = document.getElementById('right-bank-buttons');
 const counter = document.getElementById('count');
-const user = document.getElementById('user');
+const currentUser = document.getElementById('user');
 const leftBankTitle = document.getElementById('left-bank');
 const rightBankTitle = document.getElementById('right-bank');
 const form = document.getElementById('registration-form');
 const resultsList = document.getElementById('results');
 const userList = document.getElementById('users');
+const input = document.getElementById('username');
 
 markBank(currentBank);
 
+// Рендерим таблицу юзеров и результатов
 function setResults() {
   getUsers().then((res) => {
-    res.sort((a, b) => b.result - a.result);
+    res.sort((a, b) => a.result - b.result);
     resultsList.innerHTML = '';
-    userList.innerHTML = '';
     res.forEach((user) => {
       const listItem = document.createElement('li');
-      listItem.textContent = user.username;
-      userList.appendChild(listItem);
-      const resultItem = document.createElement('li');
-      resultItem.textContent = user.result; // Результат пользователя
-      resultsList.appendChild(resultItem);
+      listItem.textContent = `${user.username}: ${user.result}`;
+      resultsList.appendChild(listItem);
     });
   });
 }
@@ -37,18 +34,19 @@ function setResults() {
 // Регистрируем нового юзера
 form.addEventListener('submit', function (e) {
   e.preventDefault();
-  const formData = {
-    username: document.getElementById('username').value,
-    result: 0,
-  };
-  register(formData).then(() => setResults());
-  user.textContent = document.getElementById('username').value;
+  // const formData = {
+  //   username: input.value,
+  //   result: 0,
+  // };
+  // register(formData);
+  currentUser.textContent = input.value;
+  counter.textContent = 0;
 });
 
 // Рендерим кнопки в текущем состоянии
 function renderButtons() {
-  leftBankButtons.innerHTML = ''; // Очищаем контейнер левого берега
-  rightBankButtons.innerHTML = ''; // Очищаем контейнер правого берега
+  leftBankButtons.innerHTML = '';
+  rightBankButtons.innerHTML = '';
 
   // Сначала рендерим кнопки на левом берегу
   leftBank.forEach((entity) => {
@@ -78,10 +76,9 @@ function markBank(currentBank) {
 
 // Функция для отображения состояния
 function displayState() {
-  console.log(`Текущий берег: ${currentBank}`);
-  console.log(`Левый берег: ${leftBank.join(', ')}`);
-  console.log(`Правый берег: ${rightBank.join(', ')}`);
-  // console.log('История перемещений:', moves.join(' -> '));
+  // console.log(`Текущий берег: ${currentBank}`);
+  // console.log(`Левый берег: ${leftBank.join(', ')}`);
+  // console.log(`Правый берег: ${rightBank.join(', ')}`);
   renderButtons();
   counter.textContent = moveCount;
 }
@@ -135,8 +132,19 @@ function move(entity) {
   currentBank = currentBank === 'left' ? 'right' : 'left'; // Меняем берег
   const message = isSafe();
   if (message !== 'ok') {
-    showModal(isSafe());
+    showModal(message);
   }
+  if (rightBank.length === 3) {
+    const formData = {
+      username: currentUser.textContent,
+      result: counter.textContent,
+    };
+    register(formData).then(() => {
+      setResults();
+    });
+    showModal(`Поздравляем, это победа! Ваш результат: ${counter.textContent} ходов`);
+  }
+
   counter.textContent = moveCount++;
   markBank(currentBank);
   displayState();
@@ -147,7 +155,6 @@ function resetGame() {
   leftBank = ['Волк', 'Коза', 'Капуста'];
   rightBank = [];
   currentBank = 'left';
-  // moves = [];
   moveCount = 0;
   displayState();
 }
