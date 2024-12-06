@@ -1,3 +1,5 @@
+import { getUsers, register } from './api';
+
 // Определяем начальное состояние
 let leftBank = ['Волк', 'Коза', 'Капуста'];
 let rightBank = [];
@@ -10,7 +12,31 @@ const rightBankButtons = document.getElementById('right-bank-buttons');
 const counter = document.querySelector('.count');
 const leftBankTitle = document.getElementById('left-bank');
 const rightBankTitle = document.getElementById('right-bank');
+const form = document.getElementById('registration-form');
+const resultsList = document.getElementById('results');
+const userList = document.getElementById('users');
+
 markBank(currentBank);
+
+function setResults() {
+  getUsers().then((res) => {
+    // console.log('res ', res);
+    resultsList.innerHTML = '';
+    userList.innerHTML = '';
+    res.forEach((user) => {
+      const listItem = document.createElement('li');
+      listItem.textContent = user.username;
+      userList.appendChild(listItem);
+      const resultItem = document.createElement('li');
+      resultItem.textContent = user.result; // Результат пользователя
+      resultsList.appendChild(resultItem);
+      
+    });
+  });
+
+}
+
+setResults();
 
 function renderButtons() {
   leftBankButtons.innerHTML = ''; // Очищаем контейнер левого берега
@@ -82,7 +108,7 @@ function resetGame() {
   leftBank = ['Волк', 'Коза', 'Капуста'];
   rightBank = [];
   currentBank = 'left';
-  moves = [];
+  // moves = [];
   moveCount = 0;
   displayState();
 }
@@ -97,17 +123,16 @@ function showModal(message) {
 
   closeButton.onclick = function () {
     modal.style.display = 'none';
-    // resetGame();
+    resetGame();
   };
 
   window.onclick = function (event) {
     if (event.target === modal) {
       modal.style.display = 'none';
-      // resetGame();
+      resetGame();
     }
   };
 }
-
 
 // Функция для проверки безопасности состояния
 function isSafe() {
@@ -125,6 +150,18 @@ function isSafe() {
   }
   return 'ok';
 }
+
+form.addEventListener('submit', function (e) {
+  e.preventDefault();
+  // console.log('click');
+
+  const formData = {
+    username: document.getElementById('username').value,
+    result: 0
+  };
+
+  register(formData);
+});
 
 // Запускаем
 displayState();
