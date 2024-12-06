@@ -1,10 +1,5 @@
-import { getUsers, register } from './api';
+import { getUsers, addUser } from './api';
 
-// Определяем начальное состояние
-let leftBank = ['Волк', 'Коза', 'Капуста'];
-let rightBank = [];
-let currentBank = 'left';
-let moveCount = 0;
 const leftBankButtons = document.getElementById('left-bank-buttons');
 const rightBankButtons = document.getElementById('right-bank-buttons');
 const counter = document.getElementById('count');
@@ -13,8 +8,17 @@ const leftBankTitle = document.getElementById('left-bank');
 const rightBankTitle = document.getElementById('right-bank');
 const form = document.getElementById('registration-form');
 const resultsList = document.getElementById('results');
-const userList = document.getElementById('users');
 const input = document.getElementById('username');
+const boatLeft = document.getElementById('boat-left');
+const boatRight = document.getElementById('boat-right');
+
+console.log(boatLeft.textContent);
+
+// Определяем начальное состояние
+let leftBank = ['Волк', 'Коза', 'Капуста'];
+let rightBank = [];
+let currentBank = 'left';
+let moveCount = 0;
 
 markBank(currentBank);
 
@@ -36,8 +40,7 @@ form.addEventListener('submit', function (e) {
   e.preventDefault();
   currentUser.textContent = input.value;
   counter.textContent = 0;
-  console.log(currentUser.textContent);
-  renderButtons()
+  renderButtons();
 });
 
 // Рендерим кнопки в текущем состоянии
@@ -67,18 +70,17 @@ function renderButtons() {
 
 // Подсвечиваем текущий берег
 function markBank(currentBank) {
-  leftBankTitle.classList.remove('active');
-  rightBankTitle.classList.remove('active');
-  currentBank === 'left'
-    ? leftBankTitle.classList.add('active')
-    : rightBankTitle.classList.add('active');
+  const isLeftBank = currentBank === 'left';
+
+  leftBankTitle.classList.toggle('active', isLeftBank);
+  rightBankTitle.classList.toggle('active', !isLeftBank);
+
+  boatLeft.textContent = isLeftBank ? 'лодка здесь' : '';
+  boatRight.textContent = isLeftBank ? '' : 'лодка здесь';
 }
 
 // Функция для отображения состояния
 function displayState() {
-  // console.log(`Текущий берег: ${currentBank}`);
-  // console.log(`Левый берег: ${leftBank.join(', ')}`);
-  // console.log(`Правый берег: ${rightBank.join(', ')}`);
   renderButtons();
   counter.textContent = moveCount;
 }
@@ -90,28 +92,28 @@ function isSafe() {
     leftBank.includes('Волк') &&
     currentBank === 'right'
   ) {
-    return 'Волк съест козу';
+    return 'Волк съел козу. Попробуйте ещё раз';
   }
   if (
     leftBank.includes('Коза') &&
     leftBank.includes('Капуста') &&
     currentBank === 'right'
   ) {
-    return 'Коза съест капусту';
+    return 'Коза съела капусту. Попробуйте ещё раз';
   }
   if (
     rightBank.includes('Коза') &&
     rightBank.includes('Волк') &&
     currentBank === 'left'
   ) {
-    return 'Волк съест козу';
+    return 'Волк съел козу. Попробуйте ещё раз';
   }
   if (
     rightBank.includes('Коза') &&
     rightBank.includes('Капуста') &&
     currentBank === 'left'
   ) {
-    return 'Коза съест капусту';
+    return 'Коза съела капусту. Попробуйте ещё раз';
   }
   return 'ok';
 }
@@ -139,10 +141,12 @@ function move(entity) {
       username: currentUser.textContent,
       result: counter.textContent,
     };
-    register(formData).then(() => {
+    addUser(formData).then(() => {
       setResults();
     });
-    showModal(`Поздравляем, это победа! Ваш результат: ${counter.textContent} ходов`);
+    showModal(
+      `Поздравляем, это победа! Ваш результат: ${counter.textContent} ходов`
+    );
   }
 
   counter.textContent = moveCount++;

@@ -11,12 +11,12 @@ export function getUsers() {
     })
     .catch((error) => {
       console.error('Ошибка при получении пользователей:', error);
-      throw error; // Пробрасываем ошибку дальше для обработки
+      throw error;
     });
 }
 
-// Регистрация новго пользователя
-export function register(formData) {
+// Добавление новго пользователя
+export function addUser(formData) {
   return fetch(BASE_URL, {
     method: 'POST',
     headers: {

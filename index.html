@@ -10,34 +10,57 @@
   <body>
     <div class="page">
       <section class="main">
-        <div>
-          <p id="left-bank">Левый берег:</p>
-          <div id="left-bank-buttons" class="button"></div>
+        <div class="top-section">
+          <p>
+            Задача: Крестьянину нужно перевезти через реку волка, козу и
+            капусту. Но лодка такова, что в ней может поместиться только
+            крестьянин, а с ним или один волк, или одна коза, или одна капуста.
+            Но если оставить волка с козой, то волк съест козу, а если оставить
+            козу с капустой, то коза съест капусту. Перевезите всех за наименьшее количество ходов.
+          </p>
+          <p>Управление: Берег, на котором в данный момент находится лодка, подсвечен зелёным цветом. Чтобы начать, введите имя игрока.</p>
         </div>
-        <div>
-          <p id="right-bank">Правый берег:</p>
-          <div id="right-bank-buttons" class="button"></div>
-        </div>
-        <div>
-          <form class="registration-form" id="registration-form">
-            <h3>Регистрация нового игрока</h3>
-            <input
-              type="text"
-              id="username"
-              placeholder="Введите имя игрока"
-              required
-            />
-            <button type="submit" id="register-button">
-              Начать
-            </button>
-          </form>
-
-          <p class="counter">Текущий игрок: <span id="user"></span></p>
-          <p class="counter">Количество ходов: <span id="count"></span></p>
-          <h3>Таблица результатов</h3>
-          <div class="table">
+        <div class="middle-section">
+          <div class="block">
             <div>
-              <ul id="results"></ul>
+              <p id="left-bank" class="title">Левый берег: <span id='boat-left'></span></p>
+              <div id="left-bank-buttons" class="buttons"></div>
+            </div>
+            <div class='rectangle'></div>
+            <div>
+              <p id="right-bank" class="title">Правый берег:  <span id='boat-right'></span></p>
+              <div id="right-bank-buttons" class="buttons"></div>
+            </div>
+          </div>
+          <div class="block">
+            <div>
+              <form class="registration-form" id="registration-form">
+                <h3 >Регистрация нового игрока</h3>
+                <input
+                  class="username"
+                  type="text"
+                  id="username"
+                  placeholder="Введите имя игрока"
+                  required
+                />
+                <button
+                  type="submit"
+                  id="register-button"
+                  class="submit-button"
+                >
+                  Начать
+                </button>
+              </form>
+            </div>
+            <div>
+              <p class="text">Текущий игрок: <span id="user"></span></p>
+              <p class="text">Количество ходов: <span id="count"></span></p>
+            </div>
+            <div>
+              <h3 class="text">Таблица результатов</h3>
+              <div class="table">
+                  <ul id="results"></ul>
+              </div>
             </div>
           </div>
         </div>
