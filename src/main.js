@@ -6,10 +6,10 @@ let rightBank = [];
 let currentBank = 'left'; // Текущий берег (left или right)
 // let moves = []; // Для хранения истории перемещений
 let moveCount = 0;
-const buttonContainer = document.querySelector('.buttons-container');
 const leftBankButtons = document.getElementById('left-bank-buttons');
 const rightBankButtons = document.getElementById('right-bank-buttons');
-const counter = document.querySelector('.count');
+const counter = document.getElementById('count');
+const user = document.getElementById('user');
 const leftBankTitle = document.getElementById('left-bank');
 const rightBankTitle = document.getElementById('right-bank');
 const form = document.getElementById('registration-form');
@@ -20,7 +20,7 @@ markBank(currentBank);
 
 function setResults() {
   getUsers().then((res) => {
-    // console.log('res ', res);
+    res.sort((a, b) => b.result - a.result);
     resultsList.innerHTML = '';
     userList.innerHTML = '';
     res.forEach((user) => {
@@ -30,14 +30,22 @@ function setResults() {
       const resultItem = document.createElement('li');
       resultItem.textContent = user.result; // Результат пользователя
       resultsList.appendChild(resultItem);
-      
     });
   });
-
 }
 
-setResults();
+// Регистрируем нового юзера
+form.addEventListener('submit', function (e) {
+  e.preventDefault();
+  const formData = {
+    username: document.getElementById('username').value,
+    result: 0,
+  };
+  register(formData).then(() => setResults());
+  user.textContent = document.getElementById('username').value;
+});
 
+// Рендерим кнопки в текущем состоянии
 function renderButtons() {
   leftBankButtons.innerHTML = ''; // Очищаем контейнер левого берега
   rightBankButtons.innerHTML = ''; // Очищаем контейнер правого берега
@@ -78,26 +86,57 @@ function displayState() {
   counter.textContent = moveCount;
 }
 
+// Функция для проверки безопасности состояния
+function isSafe() {
+  if (
+    leftBank.includes('Коза') &&
+    leftBank.includes('Волк') &&
+    currentBank === 'right'
+  ) {
+    return 'Волк съест козу';
+  }
+  if (
+    leftBank.includes('Коза') &&
+    leftBank.includes('Капуста') &&
+    currentBank === 'right'
+  ) {
+    return 'Коза съест капусту';
+  }
+  if (
+    rightBank.includes('Коза') &&
+    rightBank.includes('Волк') &&
+    currentBank === 'left'
+  ) {
+    return 'Волк съест козу';
+  }
+  if (
+    rightBank.includes('Коза') &&
+    rightBank.includes('Капуста') &&
+    currentBank === 'left'
+  ) {
+    return 'Коза съест капусту';
+  }
+  return 'ok';
+}
+
 // Функция для перемещения сущности
 function move(entity) {
   if (currentBank === 'left') {
     if (leftBank.includes(entity)) {
       leftBank = leftBank.filter((e) => e !== entity);
       rightBank.push(entity);
-      // moves.push(`Крестьянин перевез ${entity} from ${currentBank}`);
-      const message = isSafe();
-      if (message !== 'ok') {
-        showModal(isSafe());
-      }
     }
   } else {
     if (rightBank.includes(entity)) {
       rightBank = rightBank.filter((e) => e !== entity);
       leftBank.push(entity);
-      // moves.push(`Крестьянин перевез ${entity} from ${currentBank}`);
     }
   }
   currentBank = currentBank === 'left' ? 'right' : 'left'; // Меняем берег
+  const message = isSafe();
+  if (message !== 'ok') {
+    showModal(isSafe());
+  }
   counter.textContent = moveCount++;
   markBank(currentBank);
   displayState();
@@ -134,34 +173,6 @@ function showModal(message) {
   };
 }
 
-// Функция для проверки безопасности состояния
-function isSafe() {
-  if (leftBank.includes('Коза') && leftBank.includes('Волк')) {
-    return 'Волк съест козу 1';
-  }
-  if (leftBank.includes('Коза') && leftBank.includes('Капуста')) {
-    return 'Коза съест капусту 1';
-  }
-  if (rightBank.includes('Коза') && rightBank.includes('Волк')) {
-    return 'Волк съест козу 2';
-  }
-  if (rightBank.includes('Коза') && rightBank.includes('Капуста')) {
-    return 'Коза съест капусту 2';
-  }
-  return 'ok';
-}
-
-form.addEventListener('submit', function (e) {
-  e.preventDefault();
-  // console.log('click');
-
-  const formData = {
-    username: document.getElementById('username').value,
-    result: 0
-  };
-
-  register(formData);
-});
-
 // Запускаем
 displayState();
+setResults();
