@@ -1,13 +1,86 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="stylesheet" href="./src/style.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite App</title>
+    <title>Wolf-Goat-Cabbage Task</title>
   </head>
   <body>
-    <div id="app"></div>
+    <div class="page">
+      <section class="main">
+        <h2>Волк, Коза и Капуста</h2>
+        <div class="top-section">
+          <p>
+            <span class="italic">Задача:</span>
+            Крестьянину нужно перевезти через реку волка, козу и капусту. Но
+            лодка такова, что в ней может поместиться только крестьянин, а с ним
+            или один волк, или одна коза, или одна капуста. Но если оставить
+            волка с козой, то волк съест козу, а если оставить козу с капустой,
+            то коза съест капусту.<br />Перевезите всех за наименьшее количество
+            ходов.<br /><span class="italic"
+              >Чтобы начать, введите имя игрока.</span
+            >
+          </p>
+        </div>
+        <div class="middle-section">
+          <div class="block">
+            <div class="game-container">
+              <!-- Первый блок -->
+              <div class="bank">
+                <div id="left-bank-buttons" class="buttons"></div>
+                <p id="boat-left" class="title"></p>
+              </div>
+              <div class="bank">
+                <p id="boat-right" class="title"></p>
+                <div id="right-bank-buttons" class="buttons"></div>
+              </div>
+            </div>
+          </div>
+          <div class="block">
+            <div>
+              <form class="registration-form" id="registration-form">
+                <h3>Регистрация нового игрока</h3>
+                <input
+                  class="username"
+                  type="text"
+                  id="username"
+                  placeholder="Введите имя игрока"
+                  required
+                />
+                <button
+                  type="submit"
+                  id="register-button"
+                  class="submit-button"
+                >
+                  Начать
+                </button>
+              </form>
+            </div>
+            <div class="text-block">
+              <h3>Текущий игрок: <span id="user"></span></h3>
+              <p>Количество ходов: <span id="count"></span></p>
+            </div>
+            <div class="text-block">
+              <h3>Таблица результатов</h3>
+              <div class="table">
+                <ul id="results"></ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Модальное окно -->
+    <div id="modal" class="modal" style="display: none">
+      <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <p id="modal-message"></p>
+      </div>
+    </div>
+
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
