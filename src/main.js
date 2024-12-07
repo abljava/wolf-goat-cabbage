@@ -10,8 +10,6 @@ const input = document.getElementById('username');
 const boatLeft = document.getElementById('boat-left');
 const boatRight = document.getElementById('boat-right');
 
-console.log(boatLeft.textContent);
-
 // Определяем начальное состояние
 let leftBank = ['Волк', 'Коза', 'Капуста'];
 let rightBank = [];
