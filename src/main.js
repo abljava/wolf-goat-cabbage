@@ -4,8 +4,6 @@ const leftBankButtons = document.getElementById('left-bank-buttons');
 const rightBankButtons = document.getElementById('right-bank-buttons');
 const counter = document.getElementById('count');
 const currentUser = document.getElementById('user');
-const leftBankTitle = document.getElementById('left-bank');
-const rightBankTitle = document.getElementById('right-bank');
 const form = document.getElementById('registration-form');
 const resultsList = document.getElementById('results');
 const input = document.getElementById('username');
@@ -19,8 +17,6 @@ let leftBank = ['Волк', 'Коза', 'Капуста'];
 let rightBank = [];
 let currentBank = 'left';
 let moveCount = 0;
-
-markBank(currentBank);
 
 // Рендерим таблицу юзеров и результатов
 function setResults() {
@@ -48,33 +44,24 @@ function renderButtons() {
   leftBankButtons.innerHTML = '';
   rightBankButtons.innerHTML = '';
 
-  // Сначала рендерим кнопки на левом берегу
-  leftBank.forEach((entity) => {
-    const button = document.createElement('button');
-    button.textContent = entity;
-    button.onclick = () => move(entity);
-    button.disabled = currentUser.textContent === '';
-    leftBankButtons.appendChild(button);
-  });
+  const render = (bank, container) => {
+    bank.forEach((entity) => {
+      const button = document.createElement('button');
+      button.textContent = entity;
+      button.onclick = () => move(entity);
+      button.disabled = currentUser.textContent === '';
+      container.appendChild(button);
+    });
+  };
 
-  // Затем рендерим кнопки на правом берегу
-  rightBank.forEach((entity) => {
-    const button = document.createElement('button');
-    button.textContent = entity;
-    button.onclick = () => move(entity);
-    button.disabled = currentUser.textContent === '';
-
-    rightBankButtons.appendChild(button);
-  });
+  render(leftBank, leftBankButtons);
+  render(rightBank, rightBankButtons);
+  markBank(currentBank);
 }
 
 // Подсвечиваем текущий берег
 function markBank(currentBank) {
   const isLeftBank = currentBank === 'left';
-
-  leftBankTitle.classList.toggle('active', isLeftBank);
-  rightBankTitle.classList.toggle('active', !isLeftBank);
-
   boatLeft.textContent = isLeftBank ? 'лодка здесь' : '';
   boatRight.textContent = isLeftBank ? '' : 'лодка здесь';
 }
@@ -159,6 +146,7 @@ function resetGame() {
   leftBank = ['Волк', 'Коза', 'Капуста'];
   rightBank = [];
   currentBank = 'left';
+  markBank(currentBank);
   moveCount = 0;
   displayState();
 }
